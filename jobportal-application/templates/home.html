@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Customer Login</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <input type="text" id="email_modal" placeholder="Email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="password_modal" placeholder="Password" class="form-control">
+                        </div>
+                        <p class="text-center">
+                            <button type="button" class="btn btn-outline-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                        </p>
+                    </form>
+                    <p class="text-center text-muted">Not registered yet?</p>
+                    <p class="text-center text-muted"><a href="client-register.html"><strong>Register now</strong></a>! It is easy and done in 1 minute and gives you access to special discounts and much more!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Login Modal End -->
+
+    <section class="custom-job-form">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="custom-job-form-box">
+                        <h2 class="heading"><i class="fa fa-search" style="color: #82CFFD;"></i> Search <span class="accent">for</span> job</h2>
+                        <form id="job-main-form" method="get" action="{% url 'jobs:searh' %}" class="job-main-form">
+                            <div class="row align-items-center">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="profession">Position</label>
+                                        <input type="text" id="profession" name="position" placeholder="Position you are looking for" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="location">Location</label>
+                                        <input type="text" id="location" name="location" placeholder="Any particular location?" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary job-main-form__button"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light-gray">
+        <div class="container">
+            <h3 class="heading">jobs</h3>
+            <div class="row featured align-items-stretch">
+                {% for job in jobs %}
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                        <div class="box-image-text bg-visible full-height">
+                            <div class="top">
+                            </div>
+                            <div class="container">
+                                <h4 style="color: blue;"><a href="{% url 'jobs:jobs-detail' job.id %}" style="color: #82CFFD;">{{ job.title }}</a></h4>
+                                <p class="featured__details">
+                                    <i class="fa fa-map-marker job__location"></i>
+                                    {{ job.location }}
+                                    {% if job.type == '1' %}
+                                        <span class="badge badge-success">Full time</span>
+                                    {% elif job.type == '2' %}
+                                        <span class="badge badge-primary">Part time</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">Internship</span>
+                                    {% endif %}
+                                </p>
+                                <p>{{ job.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
