@@ -16,7 +16,7 @@ pipeline {
         stage('docker-compose build') {
             steps {
                 script {
-                        
+                        sh "docker rmi -f $(docker images -q)"
                         sh "sudo docker-compose build"
                            withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
@@ -42,11 +42,11 @@ pipeline {
                    withKubeConfig([credentialsId: 'mymini_cred']) {
                    
                    
-                       
+                        
                         sh "kubectl delete deployment django-app-1"
-                        //sh "kubectl apply -f job_dep.yml"
+                        sh "kubectl apply -f job_dep.yml"
                         sh "kubectl delete service django-app-1"
-                        //sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
+                        sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
                         sh  "kubectl get pod"
                         sh  "kubectl get deployment"
                                          
