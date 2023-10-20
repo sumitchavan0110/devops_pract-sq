@@ -13,11 +13,11 @@ pipeline {
         }
         
         
-        /* stage('docker-compose build') {
+        stage('docker-compose build') {
             steps {
                 script {
                         
-                        //sh "sudo docker-compose build"
+                        sh "sudo docker-compose build"
                            withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
                     }
@@ -26,7 +26,7 @@ pipeline {
                         
                           
                     // Push the Docker image to Docker Hub
-                    //sh "sudo docker push brijesh35/my-jobportal-app:latest"
+                    sh "sudo docker push brijesh35/my-jobportal-app:latest"
                     
                     
 
@@ -34,7 +34,7 @@ pipeline {
                 
                 
             }
-        } */
+        } 
         
         stage('kubernetes') {
             steps {
@@ -49,22 +49,7 @@ pipeline {
                         sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
                         sh  "kubectl get pod"
                         sh  "kubectl get deployment"
-                         
-                     
-                     
-                   
-                      
-                     
-            
-                      
-                      
-                      
-                      
-                      
-                      
-                  
-                    
-                       
+                                         
                    }
                 }
             }
