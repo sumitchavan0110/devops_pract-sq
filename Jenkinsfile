@@ -26,7 +26,7 @@ pipeline {
                     
                         
                           
-                    // Push the Docker image to Docker Hub
+                    
                     sh "sudo docker push brijesh35/my-jobportal-app:latest"
                     
                     
