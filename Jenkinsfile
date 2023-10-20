@@ -44,7 +44,6 @@ pipeline {
                    
                    
                         
-                        //sh "kubectl delete deployment django-app-1"
 
                             try {
                                 // Check if the deployment exists
