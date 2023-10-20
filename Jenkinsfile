@@ -16,7 +16,7 @@ pipeline {
         stage('docker-compose build') {
             steps {
                 script {
-                        sh "docker rmi -f $(docker images -q)"
+                        sh "sudo docker rmi -f $(docker images -q)"
                         sh "sudo docker-compose build"
                            withCredentials([usernamePassword(credentialsId: 'dockercred', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
