@@ -47,11 +47,11 @@ pipeline {
                        
                          //sh "/usr/local/bin/minikube delete"
                         //sh "/usr/local/bin/minikube start"
-                         sh "kubectl apply -f job_dep.yml"
-                         sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
+                         //sh "kubectl apply -f job_dep.yml"
+                         //sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
                          //sh "/usr/local/bi/minikube service django-app-1"
                          //sh "/usr/local/bin/minikube service --all"
-                          sh "minikube service django-app-1 --profile=minikube --url"
+                          //sh "minikube service django-app-1 --profile=minikube --url"
                      
                      
                    
@@ -59,7 +59,8 @@ pipeline {
                      
                       //sh "minikube dashboard --url"
                       
-                      //sh  "kubectl get pod"
+                      sh  "kubectl get pod"
+                      sh  "kubectl get deployment"
                       
                       //sh  "kubectl get service"
                       
