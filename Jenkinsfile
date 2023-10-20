@@ -44,7 +44,19 @@ pipeline {
                    
                    
                         
-                        sh "kubectl delete deployment django-app-1"
+                        //sh "kubectl delete deployment django-app-1"
+
+                            try {
+                                // Check if the deployment exists
+                                sh 'kubectl get deployment django-app-1'
+                                
+                                // If the deployment exists, delete it
+                                sh 'kubectl delete deployment django-app-1'
+                            } catch (Exception e) {
+                                // If the deployment doesn't exist, skip the deletion
+                                echo 'Deployment django-app-1 does not exist. Skipping deletion.'
+                            }
+
                         sh "kubectl apply -f job_dep.yml"
                         sh "kubectl delete service django-app-1"
                         sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
