@@ -44,9 +44,9 @@ pipeline {
                    
                        
                         sh "kubectl delete deployment django-app-1"
-                        sh "kubectl apply -f job_dep.yml"
+                        //sh "kubectl apply -f job_dep.yml"
                         sh "kubectl delete service django-app-1"
-                        sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
+                        //sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
                         sh  "kubectl get pod"
                         sh  "kubectl get deployment"
                                          
