@@ -25,7 +25,6 @@ pipeline {
                     
                     
                         
-                          
                     
                     sh "sudo docker push brijesh35/my-jobportal-app:latest"
                     
