@@ -59,11 +59,11 @@ pipeline {
                                 echo 'Deployment django-app-1 does not exist. Skipping deletion.'
                             }
 
-                        sh "kubectl apply -f job_dep.yml"
-                        
-                        sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
-                        sh  "kubectl get pod"
-                        sh  "kubectl get deployment"
+                            sh "kubectl apply -f job_dep.yml"
+                            
+                            sh "kubectl expose deployment django-app-1 --type=NodePort --port=8000"
+                            sh  "kubectl get pod"
+                            sh  "kubectl get deployment"
                                          
                    }
                 }
