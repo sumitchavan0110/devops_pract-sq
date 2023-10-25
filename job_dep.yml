@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: django-container
-          image: brijesh35/my-jobportal-app:1.2
+          image: brijesh35/my-jobportal-app:latest
           command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
           ports:
             - containerPort: 8000

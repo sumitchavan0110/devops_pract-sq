@@ -25,7 +25,7 @@ pipeline {
                                   
                         
                     
-                    sh "sudo docker push brijesh35/my-jobportal-app:1.2"
+                    sh "sudo docker push brijesh35/my-jobportal-app:latest"
                     
                     
 
