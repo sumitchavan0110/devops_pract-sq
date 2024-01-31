@@ -16,11 +16,11 @@ pipeline {
                 script {
                         //sh 'sudo docker rmi -f \$(docker images -q)'
                         sh "docker images -q | grep -v '67a4b1138d2d' | xargs -I {} docker rmi -f {}"
-                        sh "docker-compose build"
+                        sh "sudo docker-compose build"
                            withCredentials([usernamePassword(credentialsId: 'dockercred', 
                            usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                        sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
-                        sh "docker push brijesh35/my-jobportal-app:1.5" 
+                        sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+                        sh "sudo docker push brijesh35/my-jobportal-app:1.5" 
                     }
                 }
             }
