@@ -25,13 +25,6 @@ jobs:
       run: |
         docker-compose build --build-arg TAG=brijesh35/my-jobportal-app:${{ github.run_number }}
         docker images # Add this line for debugging
-        echo "::set-env name=DOCKER_IMAGE_TAG::${GITHUB_RUN_NUMBER}"
-
-    - name: Deploy to Kubernetes
-      uses: appleboy/kubernetes-action@master
-      with:
-          k8s_manifest: ./path/to/deployment.yaml
-          image: brijesh35/my-jobportal-app:${{ env.DOCKER_IMAGE_TAG }}
 
     - name: Push Docker image to Docker Hub
       run: |
