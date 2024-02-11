@@ -18,8 +18,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-         apt-get update
-         apt-get install -y docker-compose
-         docker-compose build --build-arg TAG=${{ github.run_number }}
+         sudo apt-get update
+         sudo apt-get install -y docker-compose
+         sudo docker-compose build --build-arg TAG=${{ github.run_number }}
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/my-jobportal-app:${{ github.run_number }}
