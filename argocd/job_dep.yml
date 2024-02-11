@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: django-container
-          image: ${{ secrets.DOCKER_USERNAME }}/my-jobportal-app:${{ github.run_number }}
+          image: ${{ secrets.DOCKER_USERNAME }}/my-jobportal-app:${DOCKER_IMAGE_TAG
           command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
           ports:
             - containerPort: 8000
