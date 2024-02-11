@@ -2,9 +2,12 @@ version: "3.8"
 
 services:
   web:
-    build: .
+    build:
+    context: .
+      args:
+        TAG: ${GITHUB_RUN_NUMBER}
     container_name: jobportal-app-container
-    image: brijesh35/my-jobportal-app:${TAG}
+    image: brijesh35/my-jobportal-app:${GITHUB_RUN_NUMBER}
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
