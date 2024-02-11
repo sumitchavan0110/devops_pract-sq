@@ -3,7 +3,7 @@ version: "3.8"
 services:
   web:
     build:
-    context: .
+      context: .
       args:
         TAG: ${GITHUB_RUN_NUMBER}
     container_name: jobportal-app-container
