@@ -4,7 +4,9 @@ services:
   web:
     build: .
     container_name: jobportal-app-container
-    image: brijesh35/my-jobportal-app:${{ github.run_number }}
+     args:
+        - TAG=${TAG}
+    image: brijesh35/my-jobportal-app:${TAG}
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
