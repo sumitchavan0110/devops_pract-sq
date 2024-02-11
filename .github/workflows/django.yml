@@ -21,12 +21,6 @@ jobs:
     - name: Login to Docker Hub
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build Docker image
-      run: |
-        docker-compose build --build-arg TAG=${{ secrets.DOCKER_USERNAME }}/my-jobportal-app:${{ github.run_number }}
-        docker images # Add this line for debugging
-        docker images
-
     - name: Push Docker image to Docker Hub
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/my-jobportal-app:${{ github.run_number }}
