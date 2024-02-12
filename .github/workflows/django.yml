@@ -31,17 +31,17 @@ jobs:
         docker-compose push
         echo "Docker image pushed successfully"
 modifygit:
-    needs: docker
-    runs-on: ubuntu-latest
-    steps:
-    - name: Print current directory
-      run: pwd
+     needs: docker
+     runs-on: ubuntu-latest
+     steps:
+   - name: Print current directory
+      run: pwd
       
-   - name: Checkout repository
-     uses: actions/checkout@v2
+   - name: Checkout repository
+     uses: actions/checkout@v2
      
-   - name: Modify the image
-     run: |
+   - name: Modify the image
+     run: |
      pwd
      git config user.email agraharibrijesh77@gmail.com
      git config user.name agraharibrijesh77
@@ -54,4 +54,3 @@ modifygit:
      git add .
      git commit -m "Done by Github Actions Job change manifest: ${{ github.run_number }}"
      git push
-     
