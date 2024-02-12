@@ -62,3 +62,7 @@ jobs:
           github.run_number }}"
 
           git push
+        env:
+         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+         GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+         RUN_NUMBER: ${{ github.run_number }}  
