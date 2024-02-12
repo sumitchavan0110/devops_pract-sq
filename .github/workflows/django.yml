@@ -30,7 +30,7 @@ jobs:
       run: |
         docker-compose push
         echo "Docker image pushed successfully"
-modifygit:
+  modifygit:
      needs: docker
      runs-on: ubuntu-latest
      steps:
