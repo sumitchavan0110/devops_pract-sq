@@ -1,56 +1,65 @@
 name: Build and Push Docker Image
-
-on:
+'on':
   push:
     branches:
       - main
-
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+      - name: Login to Docker Hub
+        run: >-
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{
+          secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: >
+          docker-compose build --build-arg TAG=brijesh35/my-jobportal-app:${{
+          github.run_number }}
 
-    - name: Install Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose
-    
-    - name: Login to Docker Hub
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Build Docker image
-      run: |
-        docker-compose build --build-arg TAG=brijesh35/my-jobportal-app:${{ github.run_number }}
-        docker images # Add this line for debugging
-
-    - name: Push Docker image to Docker Hub
-      run: |
-        docker-compose push
-        echo "Docker image pushed successfully"
+          docker images # Add this line for debugging
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker-compose push
+          echo "Docker image pushed successfully"
   modifygit:
-     needs: docker
-     runs-on: ubuntu-latest
-     steps:
-     - name: Print current directory
-      run: pwd
-      
-     - name: Checkout repository
-     uses: actions/checkout@v2
-     
-     - name: Modify the image
-       run: |
-        pwd
-        git config user.email agraharibrijesh77@gmail.com
-        git config user.name agraharibrijesh77
-        pwd
-        cd argocd
-        cat job_dep.yml
-        pwd
-        sed -i "s+brijesh35/my-jobportal-app:.*+brijesh35/my-jobportal-app:$RUN_NUMBER+g" job_dep.yml
-        cat job_dep.yml
-        git add .
-        git commit -m "Done by Github Actions Job change manifest: ${{ github.run_number }}"
-        git push
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print current directory
+        run: pwd
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Modify the image
+        run: >
+          pwd
+
+          git config user.email agraharibrijesh77@gmail.com
+
+          git config user.name agraharibrijesh77
+
+          pwd
+
+          cd argocd
+
+          cat job_dep.yml
+
+          pwd
+
+          sed -i
+          "s+brijesh35/my-jobportal-app:.*+brijesh35/my-jobportal-app:$RUN_NUMBER+g"
+          job_dep.yml
+
+          cat job_dep.yml
+
+          git add .
+
+          git commit -m "Done by Github Actions Job change manifest: ${{
+          github.run_number }}"
+
+          git push
