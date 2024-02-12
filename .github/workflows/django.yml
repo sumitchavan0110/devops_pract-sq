@@ -28,7 +28,6 @@ jobs:
           docker-compose push
           echo "Docker image pushed successfully"
   modifygit:
-    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: Print current directory
