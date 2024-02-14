@@ -3,6 +3,8 @@ name: Build and Push Docker Image
   push:
     branches:
       - main
+permissions:
+  contents: write      
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
