@@ -5,9 +5,9 @@ services:
     build:
       context: .
       args:
-        TAG: jobportal-app-container1
+        TAG: jp17
     container_name: jobportal-app-container
-    image: brijesh35/my-jobportal-app:jobportal-app-container1
+    image: brijesh35/my-jobportal-app:jp17
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
