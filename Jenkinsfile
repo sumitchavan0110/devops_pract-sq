@@ -20,7 +20,7 @@ pipeline {
                            withCredentials([usernamePassword(credentialsId: 'dockercred', 
                            usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
-                        sh "sudo docker push brijesh35/my-jobportal-app:jp17 
+                        sh "sudo docker push brijesh35/my-jobportal-app:jp17"
                     }
                 }
             }
