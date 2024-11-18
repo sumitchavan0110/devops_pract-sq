@@ -29,12 +29,11 @@ pipeline {
         stage('kubernetes deployment') {
             steps {
                 script {
-                   withKubeConfig([credentialsId: 'mymini_cred']) {
+                        sh "kubectl config use-context minikube"
                         sh "kubectl apply -f job_dep.yml"                            
                         sh "kubectl apply -f service.yml"
                         sh  "kubectl get pod"
                         sh  "kubectl get deployment"                    
-                   }
                 }
             }
         }
