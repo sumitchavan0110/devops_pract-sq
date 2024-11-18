@@ -26,7 +26,7 @@ pipeline {
             }
         } 
         
-        /* stage('kubernetes deployment') {
+        stage('kubernetes deployment') {
             steps {
                 script {
                    withKubeConfig([credentialsId: 'mymini_cred']) {
@@ -37,6 +37,6 @@ pipeline {
                    }
                 }
             }
-        } */
+        }
     }
 }
