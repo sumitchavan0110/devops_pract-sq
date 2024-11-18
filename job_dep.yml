@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app-1
+  labels:
+    app: django-app-1
+spec:
+  replicas: 3  # Set the desired number of replicas.
+  selector:
+    matchLabels:
+      app: django-app-1
+  strategy:
+    type: RollingUpdate  # Specify the update strategy.
+    rollingUpdate:
+      maxUnavailable: 1  # Maximum number of unavailable pods during the update.
+      maxSurge: 1  # Maximum number of additional pods to create during the update.
+  template:
+    metadata:
+      labels:
+        app: django-app-1
+    spec:
+      containers:
+        - name: django-container
+          image: brijesh35/my-jobportal-app:57
+          command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+          ports:
+            - containerPort: 8000
