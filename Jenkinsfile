@@ -25,7 +25,6 @@ pipeline {
         
             steps{
                script{
-                   
                    def SonarQubecredentialsId = 'sonar_token'
                    QualityGateStatus(SonarQubecredentialsId)
                }
