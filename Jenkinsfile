@@ -11,22 +11,40 @@ pipeline {
             }
         }
 
-           stage('Static code analysis: Sonarqube'){
-         
-            steps{
-               script{
-                   
-                   def SonarQubecredentialsId = 'sonar_token'
-                   statiCodeAnalysis(SonarQubecredentialsId)
-               }
+        stage('Static code analysis: Sonarqube') {
+            steps {
+                script {
+                    // Define the SonarQube credentials ID
+                    def SonarQubecredentialsId = 'sonar_token'
+
+                    // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
+                    withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
+                        sh '''
+                            # Assuming sonar-scanner is installed on the agent
+                            sonar-scanner -Dsonar.projectKey=jobportal \
+                                          -Dsonar.sources=./src \
+                                          -Dsonar.host.url=http://172.28.95.37:9000/ \
+                                          -Dsonar.login=sonar_token
+                        '''
+                    }
+                }
             }
-       }
+        }
        stage('Quality Gate Status Check : sonar_token'){
         
             steps{
                script{
-                   def SonarQubecredentialsId = 'sonar_token'
-                   QualityGateStatus(SonarQubecredentialsId)
+                    // Define the SonarQube credentials ID
+                    def SonarQubecredentialsId = 'sonar_token'
+
+                    // Poll for SonarQube Quality Gate status
+                    def qualityGate = waitForQualityGate()
+
+                    if (qualityGate.status != 'OK') {
+                        error "Quality Gate failed: ${qualityGate.status}"
+                    } else {
+                        echo "Quality Gate passed: ${qualityGate.status}"
+                    }
                }
             }
        }
