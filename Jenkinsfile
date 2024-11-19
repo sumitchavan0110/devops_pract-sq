@@ -11,42 +11,26 @@ pipeline {
             }
         }
 
-
-        stage('Code Scan') {
-            steps {
-                script {
-                dir("${WORKSPACE}"){
-                // Run SonarQube analysis for Python
-                script {
-                    def scannerHome = tool name: 'scanner-name', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    withSonarQubeEnv('sonar') {
-                        sh "echo $pwd"
-                        sh "${scannerHome}/bin/sonar-scanner"
-
-                    }
-                }
+           stage('Static code analysis: Sonarqube'){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonar_token'
+                   statiCodeAnalysis(SonarQubecredentialsId)
+               }
             }
-
-           }
-        }
-    }
-
-    stage("SonarQube Quality Gate Check") {
-            steps {
-                script {
-                def qualityGate = waitForQualityGate()
-                    
-                    if (qualityGate.status != 'OK') {
-                        echo "${qualityGate.status}"
-                        error "Quality Gate failed: ${qualityGateStatus}"
-                    }
-                    else {
-                        echo "${qualityGate.status}"
-                        echo "SonarQube Quality Gates Passed"
-                    }
-                }
+       }
+       stage('Quality Gate Status Check : sonar_token'){
+         when { expression {  params.action == 'create' } }
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonar_token'
+                   QualityGateStatus(SonarQubecredentialsId)
+               }
             }
-        }
+       }
 
         stage('Build-image and push-docker hub') {
             steps {
