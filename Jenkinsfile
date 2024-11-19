@@ -12,7 +12,7 @@ pipeline {
         }
 
            stage('Static code analysis: Sonarqube'){
-         when { expression {  params.action == 'create' } }
+         
             steps{
                script{
                    
@@ -22,7 +22,7 @@ pipeline {
             }
        }
        stage('Quality Gate Status Check : sonar_token'){
-         when { expression {  params.action == 'create' } }
+        
             steps{
                script{
                    
