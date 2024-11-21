@@ -31,7 +31,6 @@ pipeline {
             }
         }
        stage('Quality Gate Status Check : sonar_token'){
-        
             steps{
                script{
                     // Define the SonarQube credentials ID
