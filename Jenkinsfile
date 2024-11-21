@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Define the SonarQube credentials ID
-                    def SonarQubecredentialsId = 'sonar_token'
+                    def SonarQubecredentialsId = 'sonar_tokenn'
 
                     // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
                     withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
@@ -24,18 +24,18 @@ pipeline {
                             sonar-scanner -Dsonar.projectKey=jobportal \
                                           -Dsonar.sources=./src \
                                           -Dsonar.host.url=http://172.28.95.37:9000/ \
-                                          -Dsonar.login=sonar_token
+                                          -Dsonar.login=sonar_tokenn
                         "
                     '''
                     }
                 }
             }
         }
-       stage('Quality Gate Status Check : sonar_token'){
+       stage('Quality Gate Status Check : sonar_tokenn'){
             steps{
                script{
                     // Define the SonarQube credentials ID
-                    def SonarQubecredentialsId = 'sonar_token'
+                    def SonarQubecredentialsId = 'sonar_tokenn'
 
                     // Poll for SonarQube Quality Gate status
                     def qualityGate = waitForQualityGate()
