@@ -19,13 +19,14 @@ pipeline {
 
                     // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
                     withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
-                        sh '''
-                            # Assuming sonar-scanner is installed on the agent
+                    sh '''
+                        docker exec 542ccdf914eb sh -c "
                             sonar-scanner -Dsonar.projectKey=jobportal \
                                           -Dsonar.sources=./src \
                                           -Dsonar.host.url=http://172.28.95.37:9000/ \
                                           -Dsonar.login=sonar_token
-                        '''
+                        "
+                    '''
                     }
                 }
             }
