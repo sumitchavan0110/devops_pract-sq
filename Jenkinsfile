@@ -1,9 +1,8 @@
 pipeline {
     agent any
 
-        environment {
+    environment {
         SONAR_HOST_URL = 'http://172.28.95.37:9000'
-        SONAR_LOGIN = 'sonar_token1'  // Use your actual SonarQube token
         PROJECT_KEY = 'jobportal'
         SOURCE_DIR = './src'  // Adjust this path if needed
     }
@@ -12,9 +11,9 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                      def gitRepoUrl = 'https://github.com/agraharibrijesh/devops_pract.git'
-                      checkout([$class: 'GitSCM', branches: [[name: 'main']],
-                       userRemoteConfigs: [[url: gitRepoUrl]]])
+                    def gitRepoUrl = 'https://github.com/agraharibrijesh/devops_pract.git'
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']],
+                        userRemoteConfigs: [[url: gitRepoUrl]]])
                 }
             }
         }
@@ -23,62 +22,65 @@ pipeline {
             steps {
                 script {
                     // Define the SonarQube credentials ID
-                    def SonarQubecredentialsId = 'sonar_token1'
-                    // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
-                    withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
-                    sh """
-                        sonar-scanner \
-                            -X \
-                            -Dsonar.projectKey=${PROJECT_KEY} \
-                            -Dsonar.sources=${SOURCE_DIR} \
-                            -Dsonar.host.url=${SONAR_HOST_URL} \
-                            -Dsonar.login=${SONAR_LOGIN}
-                    """
+                    def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
+                    
+                    // Run SonarQube analysis using sonar-scanner
+                    withSonarQubeEnv(credentialsId: sonarQubeCredentialsId) {
+                        sh """
+                            sonar-scanner \
+                                -X \
+                                -Dsonar.projectKey=${PROJECT_KEY} \
+                                -Dsonar.sources=${SOURCE_DIR} \
+                                -Dsonar.host.url=${SONAR_HOST_URL}
+                        """
                     }
                 }
             }
         }
-       stage('Quality Gate Status Check : sonar_token1'){
-            steps{
-               script{
-                    // Define the SonarQube credentials ID
-                    def SonarQubecredentialsId = 'sonar_token1'
 
+        stage('Quality Gate Status Check : sonar_token1') {
+            steps {
+                script {
                     // Poll for SonarQube Quality Gate status
                     def qualityGate = waitForQualityGate()
-
+                    
                     if (qualityGate.status != 'OK') {
                         error "Quality Gate failed: ${qualityGate.status}"
                     } else {
                         echo "Quality Gate passed: ${qualityGate.status}"
                     }
-               }
+                }
             }
-       }
+        }
 
         stage('Build-image and push-docker hub') {
             steps {
                 script {
-                        //sh 'sudo docker rmi -f \$(docker images -q)'
-                        sh "docker images -q | grep -v '67a4b1138d2d' | xargs -I {} docker rmi -f {}"
-                        sh "sudo docker-compose build"
-                           withCredentials([usernamePassword(credentialsId: 'dockercred', 
-                           usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                    // Clean up old Docker images
+                    sh "docker images -q | grep -v '67a4b1138d2d' | xargs -I {} docker rmi -f {}"
+                    
+                    // Build Docker images using docker-compose
+                    sh "sudo docker-compose build"
+                    
+                    // Login to Docker Hub and push the image
+                    withCredentials([usernamePassword(credentialsId: 'dockercred', 
+                        usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
                         sh "sudo docker push brijesh35/my-jobportal-app:jp17"
                     }
                 }
             }
-        } 
-        
-        stage('kubernetes deployment') {
+        }
+
+        stage('Kubernetes Deployment') {
             steps {
                 script {
-                        sh "kubectl config use-context minikube"
-                        sh "kubectl apply -f job_dep.yml"                            
-                        sh "kubectl apply -f service.yml"
-                        sh  "kubectl get pod"
-                        sh  "kubectl get deployment"                    
+                    // Deploy to Kubernetes (assuming Minikube)
+                    sh "kubectl config use-context minikube"
+                    sh "kubectl apply -f job_dep.yml"
+                    sh "kubectl apply -f service.yml"
+                    sh "kubectl get pod"
+                    sh "kubectl get deployment"
                 }
             }
         }
