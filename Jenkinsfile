@@ -26,8 +26,9 @@ pipeline {
                     def SonarQubecredentialsId = 'sonar_token1'
                     // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
                     withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
-                   sh """
+                    sh """
                         sonar-scanner \
+                            -X \
                             -Dsonar.projectKey=${PROJECT_KEY} \
                             -Dsonar.sources=${SOURCE_DIR} \
                             -Dsonar.host.url=${SONAR_HOST_URL} \
