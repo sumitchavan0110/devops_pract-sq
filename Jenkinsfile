@@ -22,13 +22,12 @@ pipeline {
             steps {
                 script {
                     // Define the SonarQube credentials ID
-                    def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
-                    
+                    //def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
+                    def scannerHome = tool 'SonarQube'
                     // Run SonarQube analysis using sonar-scanner
-                    withSonarQubeEnv(credentialsId: sonarQubeCredentialsId) {
+                    withSonarQubeEnv(credentialsId: 'sonar_token1') {
                         sh """
-                            sonar-scanner \
-                                -X \
+                            /var/lib/jenkins/tools/hudson.plugins.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
                                 -Dsonar.projectKey=${PROJECT_KEY} \
                                 -Dsonar.sources=${SOURCE_DIR} \
                                 -Dsonar.host.url=${SONAR_HOST_URL}
