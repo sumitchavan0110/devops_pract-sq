@@ -1,5 +1,13 @@
 pipeline {
     agent any
+
+        environment {
+        SONAR_HOST_URL = 'http://172.28.95.37:9000'
+        SONAR_LOGIN = 'sonar_token1'  // Use your actual SonarQube token
+        PROJECT_KEY = 'jobportal'
+        SOURCE_DIR = './src'  // Adjust this path if needed
+    }
+    
     stages {
         stage('Checkout Code') {
             steps {
@@ -19,14 +27,13 @@ pipeline {
 
                     // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
                     withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
-                    sh '''
-                        docker exec ac96cc322a82 sh -c "
-                            sonar-scanner -Dsonar.projectKey=jobportal \
-                                          -Dsonar.sources=./src \
-                                          -Dsonar.host.url=http://172.28.95.37:9000/ \
-                                          -Dsonar.login=sonar_token1
-                        "
-                    '''
+                   sh """
+                        sonar-scanner \
+                            -Dsonar.projectKey=${PROJECT_KEY} \
+                            -Dsonar.sources=${SOURCE_DIR} \
+                            -Dsonar.host.url=${SONAR_HOST_URL} \
+                            -Dsonar.login=${SONAR_LOGIN}
+                    """
                     }
                 }
             }
