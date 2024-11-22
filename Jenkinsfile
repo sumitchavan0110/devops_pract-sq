@@ -27,7 +27,7 @@ pipeline {
                     // Run SonarQube analysis using sonar-scanner
                     withSonarQubeEnv('sonar_token1') {
                         sh """
-                            /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner \
+                            /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
                                 -Dsonar.projectKey=${PROJECT_KEY} \
                                 -Dsonar.sources=${SOURCE_DIR} \
                                 -Dsonar.host.url=${SONAR_HOST_URL}
