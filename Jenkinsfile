@@ -19,26 +19,19 @@ pipeline {
         }
 
         stage('Static code analysis: Sonarqube') {
-            def scannerHome = tool 'SonarQube'
             steps {
-                
                 script {
                     // Define the SonarQube credentials ID
                     //def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
-                    
+                    def scannerHome = tool 'SonarQube'
                     // Run SonarQube analysis using sonar-scanner
                     withSonarQubeEnv('sonar_token1') {
-                        sh """/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
-                        -D sonar.projectVersion=1.0-SNAPSHOT \
-                        -D sonar.login=admin \
-                        -D sonar.password=Admin@123456 \
-                        -D sonar.projectBaseDir=/var/lib/jenkins/workspace/Job_portal_CI_CD/ \
-                            -D sonar.projectKey=jobportal \
-                            -D sonar.sourceEncoding=UTF-8 \
-                            -D sonar.language=python \
-                            -D sonar.sources=Job_portal_CI_CD/jobportal-application/accounts \
-                            -D sonar.tests=Job_portal_CI_CD/jobportal-application/accounts/migrations \
-                            -D sonar.host.url=http://172.28.95.37:9000/"""
+                        sh """
+                            /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner \
+                                -Dsonar.projectKey=${PROJECT_KEY} \
+                                -Dsonar.sources=${SOURCE_DIR} \
+                                -Dsonar.host.url=${SONAR_HOST_URL}
+                        """
                     }
                 }
             }
