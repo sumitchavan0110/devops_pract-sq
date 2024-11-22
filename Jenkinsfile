@@ -37,7 +37,6 @@ pipeline {
                 }
             }
         }
-        
        stage('Quality Gate Status Check : sonar_token1'){
             steps{
                script{
