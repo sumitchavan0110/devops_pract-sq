@@ -7,7 +7,7 @@ pipeline {
         PROJECT_KEY = 'jobportal'
         SOURCE_DIR = './src'  // Adjust this path if needed
     }
-    
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -24,7 +24,6 @@ pipeline {
                 script {
                     // Define the SonarQube credentials ID
                     def SonarQubecredentialsId = 'sonar_token1'
-
                     // Run SonarQube analysis using sonar-scanner (or equivalent Python tool)
                     withSonarQubeEnv(credentialsId: SonarQubecredentialsId) {
                    sh """
