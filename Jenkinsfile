@@ -20,10 +20,11 @@ pipeline {
 
         stage('Static code analysis: Sonarqube') {
             steps {
+                def scannerHome = tool 'SonarQube'
                 script {
                     // Define the SonarQube credentials ID
                     //def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
-                    def scannerHome = tool 'SonarQube'
+                    
                     // Run SonarQube analysis using sonar-scanner
                     withSonarQubeEnv('sonar_token1') {
                         sh """/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
