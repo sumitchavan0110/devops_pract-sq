@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONAR_HOST_URL = 'http://172.28.95.37:9000'
         PROJECT_KEY = 'jobportal'
-        SOURCE_DIR = './src'  // Adjust this path if needed
+        SOURCE_DIR = 'Job_portal_CI_CD/jobportal-application'  // Adjust this path if needed
     }
 
     stages {
