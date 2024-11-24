@@ -28,6 +28,7 @@ pipeline {
                 // Run SonarQube Scanner
                            withSonarQubeEnv('SonarQubeServer') {
                          sh "${scannerHome}/bin/sonar-scanner"
+                         echo "${scannerHome}/bin/sonar-scanner/test"
                     }
                 }
             }
