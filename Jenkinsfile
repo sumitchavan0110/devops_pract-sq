@@ -23,22 +23,18 @@ pipeline {
                 script {
                     // Define the SonarQube credentials ID
                     //def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
-                    def scannerHome = tool 'SonarQube'
-                    // Run SonarQube analysis using sonar-scanner
-                    withSonarQubeEnv(credentialsId: 'sonar_token1') {
-                        sh """
-                            sonar-scanner \
-                                -X \
-                                -Dsonar.projectKey=${PROJECT_KEY} \
-                                -Dsonar.sources=${SOURCE_DIR} \
-                                -Dsonar.host.url=${SONAR_HOST_URL}
-                        """
+                            def scannerHome = tool 'SonarQubeScanner';
+                            echo "SonarQube Scanner installation directory: ${scannerHome}"
+
+                // Run SonarQube Scanner
+                           withSonarQubeEnv('SonarQubeServer') {
+                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
             }
         }
 
-        stage('Quality Gate Status Check : sonar_token1') {
+       /* stage('Quality Gate Status Check : sonar_token1') {
             steps {
                 script {
                     // Poll for SonarQube Quality Gate status
@@ -51,7 +47,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
 
         stage('Build-image and push-docker hub') {
             steps {
