@@ -18,21 +18,21 @@ pipeline {
             }
         }
 
-        stage('Static code analysis: Sonarqube') {
-            steps {
-                script {
-                    // Define the SonarQube credentials ID
-                    //def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
-                            def scannerHome = tool 'SonarQubeScanner';
-                            echo "SonarQube Scanner installation directory: ${scannerHome}"
-                // Run SonarQube Scanner
-                           withSonarQubeEnv('SonarQubeServer') {
-                         sh "${scannerHome}/bin/sonar-scanner"
-                         echo "${scannerHome}/bin/sonar-scanner/test"
+        stage('SonarQube Analysis') {
+                steps {
+                    // Execute SonarQube Scanner
+                    script {
+                        // Get the path to SonarQube Scanner installation directory
+                        def scannerHome = tool 'SonarQubeScanner';
+                        echo "SonarQube Scanner installation directory: ${scannerHome}"
+
+                        // Run SonarQube Scanner
+                        withSonarQubeEnv('SonarQubeServer') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
                     }
                 }
             }
-        }
 
        /* stage('Quality Gate Status Check : sonar_token1') {
             steps {
