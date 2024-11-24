@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_SERVER = 'http://172.28.95.37:9000'
         PROJECT_KEY = 'jobportal'
-        SONARQUBE_TOKEN = credentials('sonarv1') 
+        //SONARQUBE_TOKEN = credentials('sonarv1') 
         SONARQUBE_TOKEN = sqp_d71cf354e237a65f6011cd03657d2fa738614901
         SOURCE_DIR = 'Job_portal_CI_CD/jobportal-application'  // Adjust this path if needed
     }
