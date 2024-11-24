@@ -2,8 +2,10 @@ pipeline {
     agent any
 
     environment {
-        SONAR_HOST_URL = 'http://172.28.95.37:9000'
+        SONARQUBE_SERVER = 'http://172.28.95.37:9000'
         PROJECT_KEY = 'jobportal'
+        SONARQUBE_TOKEN = credentials('sonarv1') 
+        SONARQUBE_TOKEN = sqp_d71cf354e237a65f6011cd03657d2fa738614901
         SOURCE_DIR = 'Job_portal_CI_CD/jobportal-application'  // Adjust this path if needed
     }
 
@@ -18,21 +20,18 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-                steps {
-                    // Execute SonarQube Scanner
-                    script {
-                        // Get the path to SonarQube Scanner installation directory
-                        def scannerHome = tool 'SonarQubeScanner';
-                        echo "SonarQube Scanner installation directory: ${scannerHome}"
-
-                        // Run SonarQube Scanner
-                        withSonarQubeEnv('SonarQubeServer') {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                        }
+        stage('Run SonarQube Analysis') {
+            steps {
+                script {
+                    // Run SonarQube analysis using SonarQube scanner
+                    withSonarQubeEnv(SONARQUBE_SERVER) {
+                        sh './venv/bin/sonar-scanner -Dsonar.login=$SONARQUBE_TOKEN -Dsonar.projectKey=jobportal'
                     }
                 }
             }
+        }
+        
+
 
        /* stage('Quality Gate Status Check : sonar_token1') {
             steps {
