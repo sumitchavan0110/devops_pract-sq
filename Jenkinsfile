@@ -25,7 +25,6 @@ pipeline {
                     //def sonarQubeCredentialsId = 'sonar_token1' // Jenkins secret ID for SonarQube token
                             def scannerHome = tool 'SonarQubeScanner';
                             echo "SonarQube Scanner installation directory: ${scannerHome}"
-
                 // Run SonarQube Scanner
                            withSonarQubeEnv('SonarQubeServer') {
                          sh "${scannerHome}/bin/sonar-scanner"
