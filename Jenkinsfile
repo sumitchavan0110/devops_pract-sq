@@ -53,8 +53,8 @@ pipeline {
             steps {
                 script {
                     // Clean up old Docker images
-                    sh "docker images -q | grep -v '67a4b1138d2d' | xargs -I {} docker rmi -f {}"
-                    
+                  //  sh "docker images -q | grep -v '67a4b1138d2d' | xargs -I {} docker rmi -f {}"
+                    sh "docker images -q | grep -v '67a4b1138d2d' | grep -v 'e3295fe6246a' | xargs -I {} docker rmi -f {}"
                     // Build Docker images using docker-compose
                     sh "sudo docker-compose build"
                     
