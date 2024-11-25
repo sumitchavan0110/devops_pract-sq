@@ -34,7 +34,7 @@ pipeline {
         
 
 
-        stage('Quality Gate Status Check : sonar_token1') {
+        stage('Quality Gate Status Check') {
             steps {
                 script {
                     // Poll for SonarQube Quality Gate status
