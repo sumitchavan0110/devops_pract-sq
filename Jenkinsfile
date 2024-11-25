@@ -41,7 +41,7 @@ pipeline {
                     def qualityGate = waitForQualityGate()
                     
                     if (qualityGate.status != 'OK') {
-                        echo "Quality Gate failed: ${qualityGate.status}"
+                        error "Quality Gate failed: ${qualityGate.status}"
                     } else {
                         echo "Quality Gate passed: ${qualityGate.status}"
                     }
