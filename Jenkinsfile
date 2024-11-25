@@ -49,6 +49,9 @@ pipeline {
             }
         } */
 
+
+        
+
         stage('Build-image and push-docker hub') {
             steps {
                 script {
