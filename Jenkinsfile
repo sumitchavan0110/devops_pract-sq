@@ -24,10 +24,10 @@ pipeline {
             steps {
                 script {
                     // Run SonarQube analysis using SonarQube scanner
-                    withSonarQubeEnv(SONARQUBE_SERVER) {
-                        echo 'brijesh'
-                        sh './venv/bin/sonar-scanner -Dsonar.login=$SONARQUBE_TOKEN -Dsonar.projectKey=jobportal'
-                    }
+        
+                        sh 'sudo sonar-scanner -X'
+                
+                
                 }
             }
         }
