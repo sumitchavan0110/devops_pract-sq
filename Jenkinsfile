@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     // Deploy to Kubernetes (assuming Minikube)
-                    sh "kubectl config use-context minikube"
+                    //sh "kubectl config use-context minikube"
                     sh "kubectl apply -f job_dep.yml"
                     sh "kubectl apply -f service.yml"
                     sh "kubectl get pod"
