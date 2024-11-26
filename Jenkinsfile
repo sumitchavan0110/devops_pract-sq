@@ -36,6 +36,8 @@ pipeline {
          stage('Quality Gate Status Check') {
             steps {
                 script {
+
+                withCredentials([string(credentialsId: 'sonarv1', variable: 'sonarv1')]){
                     // Poll for SonarQube Quality Gate status
                     def qualityGate = waitForQualityGate()
                     
@@ -44,6 +46,7 @@ pipeline {
                     } else {
                         echo "Quality Gate passed: ${qualityGate.status}"
                     }
+                }
                 }
             }
         }
