@@ -71,12 +71,18 @@ pipeline {
         stage('Kubernetes Deployment') {
             steps {
                 script {
-                    // Deploy to Kubernetes (assuming Minikube)
-                    //sh "kubectl config use-context minikube"
+
+                   withCredentials([kubeConfig(credentialsId: 'my-kube-config')]) {
                     sh "kubectl apply -f job_dep.yml"
                     sh "kubectl apply -f service.yml"
                     sh "kubectl get pod"
                     sh "kubectl get deployment"
+                    
+                   }
+      
+                    // Deploy to Kubernetes (assuming Minikube)
+                    //sh "kubectl config use-context minikube"
+                  
                 }
             }
         }
