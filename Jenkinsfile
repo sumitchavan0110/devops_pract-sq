@@ -25,8 +25,11 @@ pipeline {
                   withSonarQubeEnv('MySonarQube'){
                 
                     // Run SonarQube analysis using SonarQube scanner
-        
+                        """
                         sh 'sudo sonar-scanner -X'
+                        -Dsonar.host.url=${SONARQUBE_SERVER} \
+                        -Dsonar.login=$sonar_token
+                        """
                         }
             }
         }
