@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
 
-                withCredentials([string(credentialsId: 'sonarv1', variable: 'sonarv1')]){
+                withSonarQubeEnv('MySonarQube'){
                     // Poll for SonarQube Quality Gate status
                     def qualityGate = waitForQualityGate()
                     
