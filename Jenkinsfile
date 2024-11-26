@@ -22,13 +22,11 @@ pipeline {
 
         stage('Run SonarQube Analysis') {
             steps {
-                script {
+                  withSonarQubeEnv('MySonarQube')
+                
                     // Run SonarQube analysis using SonarQube scanner
         
                         sh 'sudo sonar-scanner -X'
-                
-                
-                }
             }
         }
         
