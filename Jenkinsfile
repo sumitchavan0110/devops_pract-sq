@@ -34,7 +34,7 @@ pipeline {
         
 
 
-        /* stage('Quality Gate Status Check') {
+         stage('Quality Gate Status Check') {
             steps {
                 script {
                     // Poll for SonarQube Quality Gate status
@@ -47,7 +47,7 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
 
         stage('Build-image and push-docker hub') {
             steps {
