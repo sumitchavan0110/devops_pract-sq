@@ -25,12 +25,7 @@ pipeline {
                   withSonarQubeEnv('MySonarQube'){
                 
                     // Run SonarQube analysis using SonarQube scanner
-                        sh """
-                        'sudo sonar-scanner -X' \
-                        Dsonar.sources=${env.WORKSPACE} \
-                        -Dsonar.host.url=${SONARQUBE_SERVER} \
-                        -Dsonar.login=$sonar_token
-                        """
+                        sh 'sudo sonar-scanner -X'
                         }
             }
         }
@@ -41,7 +36,8 @@ pipeline {
             steps {
                 script {
 
-                withSonarQubeEnv('MySonarQube'){
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]){
+                     withSonarQubeEnv('MySonarQube'){
                     // Poll for SonarQube Quality Gate status
                     def qualityGate = waitForQualityGate()
                     
@@ -50,6 +46,7 @@ pipeline {
                     } else {
                         echo "Quality Gate passed: ${qualityGate.status}"
                     }
+                }
                 }
                 }
             }
