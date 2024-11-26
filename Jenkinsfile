@@ -24,8 +24,17 @@ pipeline {
             steps {
                 script {
                     // Run SonarQube analysis using SonarQube scanner
-        
+                        withSonarQubeEnv('MySonarQube'){
                         sh 'sudo sonar-scanner -X'
+                        if (qualityGate.status != 'OK'){
+                            echo "Quality Gate notpass: ${qualityGate.status}"
+                        } else {
+                        echo "Quality Gate passed: ${qualityGate.status}"
+                    }
+
+                        
+
+                        }
                 
                 
                 }
@@ -37,8 +46,6 @@ pipeline {
         stage('Quality Gate Status Check') {
             steps {
                 script {
-
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]){
                      withSonarQubeEnv('MySonarQube'){
                     // Poll for SonarQube Quality Gate status
                     def qualityGate = waitForQualityGate()
@@ -49,7 +56,7 @@ pipeline {
                         echo "Quality Gate passed: ${qualityGate.status}"
                     }
                 }
-                }
+                
                 }
             }
         }
