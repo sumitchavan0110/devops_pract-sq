@@ -72,11 +72,11 @@ pipeline {
             steps {
                 script {
 
-                   withCredentials([kubeConfig(credentialsId: 'mymini_cred')]) {
+                   withKubeConfig([credentialsId: 'mymini_cred']) {
                     sh "kubectl apply -f job_dep.yml"
                     sh "kubectl apply -f service.yml"
                     sh "kubectl get pod"
-                    sh "kubectl get deployment"
+                    sh "kubectl get deployment" 
                     
                    }
       
