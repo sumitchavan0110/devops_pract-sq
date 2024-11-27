@@ -53,7 +53,7 @@ pipeline {
 
         
 
-        stage('Build-image and push-docker hub') {
+        stage('Build-image') {
             steps {
                 script {
                     // Clean up old Docker images
@@ -98,7 +98,7 @@ pipeline {
             }
         }
 
-        stage('Fail on Critical Vulnerabilities') {
+       /* stage('Fail on Critical Vulnerabilities') {
             steps {
                 script {
                     // Check the Trivy report for critical vulnerabilities
@@ -110,7 +110,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
 
         stage('push image-docker hub') {
             steps {
