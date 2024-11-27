@@ -70,7 +70,7 @@ pipeline {
                     }
                 }
             }
-        } 
+        
 
     stage('Run Trivy Scan') {
             steps {
