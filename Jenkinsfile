@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 script {
-                    def gitRepoUrl = 'https://github.com/gopal-py07/DevSecOps-Django-PollApp'
+                    def gitRepoUrl = 'https://github.com/agraharibrijesh/devops_pract.git'
                     checkout([$class: 'GitSCM', branches: [[name: 'main']],
                         userRemoteConfigs: [[url: gitRepoUrl]]])
                 }
