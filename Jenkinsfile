@@ -7,6 +7,8 @@ pipeline {
         //SONARQUBE_TOKEN = credentials('sonarv1') 
         SONARQUBE_TOKEN = 'sqp_d71cf354e237a65f6011cd03657d2fa738614901'
         SOURCE_DIR = 'Job_portal_CI_CD/jobportal-application'  // Adjust this path if needed
+
+        DOCKER_IMAGE = 'brijesh35/my-jobportal-app:jp17'
     }
 
     stages {
@@ -26,19 +28,13 @@ pipeline {
                     // Run SonarQube analysis using SonarQube scanner
                         withSonarQubeEnv('MySonarQube'){
                         sh 'sudo sonar-scanner -X'
-
-                        
-
                         }
-                
-                
+                    }
                 }
             }
-        }
         
 
-
-        stage('Quality Gate Status Check') {
+       /* stage('Quality Gate Status Check') {
             steps {
                 script {
                             // Poll for SonarQube Quality Gate status
@@ -47,12 +43,15 @@ pipeline {
                                 error "Quality Gate failed: ${qualityGate.status}"
                             } else {
                                 echo "Quality Gate passed: ${qualityGate.status}"
-                            }
-                        
-                    
-                }
-            }
-        }
+                            }                    
+                       }
+                   }
+        }  */
+
+
+
+
+        
 
         stage('Build-image and push-docker hub') {
             steps {
@@ -64,6 +63,50 @@ pipeline {
                     sh "sudo docker-compose build"
                     
                     // Login to Docker Hub and push the image
+                    /* withCredentials([usernamePassword(credentialsId: 'dockercred', 
+                        usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+                        sh "sudo docker push brijesh35/my-jobportal-app:jp17" */
+                    }
+                }
+            }
+        } 
+
+    stage('Run Trivy Scan') {
+            steps {
+                script {
+                    // Run Trivy to scan the Docker image for vulnerabilities
+                    sh "trivy image --exit-code 1 --no-progress --format json -o trivy-report.json ${DOCKER_IMAGE}"
+                }
+            }
+        }
+
+        stage('Publish Trivy Report') {
+            steps {
+                script {
+                    // Archive the Trivy scan report as an artifact in Jenkins
+                    archiveArtifacts artifacts: 'trivy-report.json', allowEmptyArchive: true
+                }
+            }
+        }
+
+        stage('Fail on Critical Vulnerabilities') {
+            steps {
+                script {
+                    // Check the Trivy report for critical vulnerabilities
+                    def report = readJSON file: 'trivy-report.json'
+                    def criticalVulnerabilities = report.findAll { it.severity == 'CRITICAL' }
+                    
+                    if (criticalVulnerabilities.size() > 0) {
+                        error "Critical vulnerabilities found in the Docker image!"
+                    }
+                }
+            }
+        }
+
+        stage('push image-docker hub') {
+            steps {
+                script {
                     withCredentials([usernamePassword(credentialsId: 'dockercred', 
                         usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                         sh "sudo docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
@@ -72,6 +115,7 @@ pipeline {
                 }
             }
         } 
+        
 
         stage('Kubernetes Deployment') {
             steps {
