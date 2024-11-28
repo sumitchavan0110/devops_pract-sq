@@ -32,17 +32,17 @@ pipeline {
                         }
                     }
 
-                 timeout(time: 10, unit: 'MINUTES') {
+                 /*timeout(time: 10, unit: 'MINUTES') {
                  script {
                             waitForQualityGate abortPipeline: true
                         }
-                   }
+                   } */
                 }
 
             }
         
 
-       /*  stage('Quality Gate Status Check') {
+         stage('Quality Gate Status Check') {
             steps {
                 script {
                             // Poll for SonarQube Quality Gate status
@@ -54,7 +54,7 @@ pipeline {
                             }                    
                        }
                    }
-        }  */
+        }  
 
 
 
