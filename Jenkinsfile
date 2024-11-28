@@ -30,11 +30,18 @@ pipeline {
                         sh 'sudo sonar-scanner -X'
                         }
                     }
+
+                 timeout(time: 2, unit: 'MINUTES') {
+                 script {
+                            waitForQualityGate abortPipeline: true
+                        }
+                   }
                 }
+
             }
         
 
-         stage('Quality Gate Status Check') {
+       /*  stage('Quality Gate Status Check') {
             steps {
                 script {
                             // Poll for SonarQube Quality Gate status
@@ -46,7 +53,7 @@ pipeline {
                             }                    
                        }
                    }
-        }
+        }  */
 
 
 
