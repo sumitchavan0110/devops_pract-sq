@@ -101,7 +101,7 @@ pipeline {
             steps {
                 script {
                     // Archive the Trivy scan report as an artifact in Jenkins
-                    archiveArtifacts artifacts: 'trivy-report.json', allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'trivy-report.text', allowEmptyArchive: true
                 }
             }
         }
