@@ -80,31 +80,31 @@ pipeline {
             }
         
 
-    stage('Run Trivy Scan') {
-            steps {
-                script {
-                       def result = sh(
-                    // Run Trivy to scan the Docker image for vulnerabilities
-                     script: "trivy image --exit-code 1 --no-progress --format txt -o trivy-report.txt ${DOCKER_IMAGE}",
-                    returnStatus: true
-                       )
-                    echo "Trivy scan completed with exit code: ${result}"
-                    if (result != 0) {
-                        echo "Vulnerabilities found in the image. Proceeding with the build."
-                    }
-                }
-            }
-
-        }
-
-        stage('Publish Trivy Report') {
-            steps {
-                script {
-                    // Archive the Trivy scan report as an artifact in Jenkins
-                    archiveArtifacts artifacts: 'trivy-report.json', allowEmptyArchive: true
-                }
+stage('Run Trivy Scan') {
+    steps {
+        script {
+            def result = sh(
+                // Run Trivy to scan the Docker image for vulnerabilities
+                script: "trivy image --exit-code 1 --no-progress --format txt -o trivy-report.txt ${DOCKER_IMAGE}",
+                returnStatus: true
+            )
+            echo "Trivy scan completed with exit code: ${result}"
+            if (result != 0) {
+                echo "Vulnerabilities found in the image. Proceeding with the build."
             }
         }
+    }
+}
+
+stage('Publish Trivy Report') {
+    steps {
+        script {
+            // Archive the Trivy scan report in text format as an artifact in Jenkins
+            archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
+        }
+    }
+}
+
 
        /* stage('Fail on Critical Vulnerabilities') {
             steps {
