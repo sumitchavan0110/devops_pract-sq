@@ -92,6 +92,9 @@ stage('Run Trivy Scan') {
             if (result != 0) {
                 echo "Vulnerabilities found in the image. Proceeding with the build."
             }
+
+            // Debugging step: List files in the workspace
+            sh "ls -l"
         }
     }
 }
@@ -99,11 +102,15 @@ stage('Run Trivy Scan') {
 stage('Publish Trivy Report') {
     steps {
         script {
+            // Debugging step: Verify if the file exists
+            sh "ls -l trivy-report.txt"
+            
             // Archive the Trivy scan report in text format as an artifact in Jenkins
             archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
         }
     }
 }
+
 
 
        /* stage('Fail on Critical Vulnerabilities') {
