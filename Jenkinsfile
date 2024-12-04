@@ -85,7 +85,7 @@ stage('Run Trivy Scan') {
         script {
             def result = sh(
                 // Run Trivy to scan the Docker image for vulnerabilities
-                script: "trivy image --exit-code 1 --no-progress --format txt -o trivy-report.txt ${DOCKER_IMAGE}",
+                script: "trivy image --exit-code 1 --no-progress --format table -o trivy-report.txt ${DOCKER_IMAGE}",
                 returnStatus: true
             )
             echo "Trivy scan completed with exit code: ${result}"
@@ -93,7 +93,7 @@ stage('Run Trivy Scan') {
                 echo "Vulnerabilities found in the image. Proceeding with the build."
             }
 
-            // Debugging step: List files in the workspace
+            // List files in the workspace for debugging
             sh "ls -l"
         }
     }
@@ -102,14 +102,15 @@ stage('Run Trivy Scan') {
 stage('Publish Trivy Report') {
     steps {
         script {
-            // Debugging step: Verify if the file exists
+            // Verify if the file exists before archiving
             sh "ls -l trivy-report.txt"
-            
-            // Archive the Trivy scan report in text format as an artifact in Jenkins
+
+            // Archive the Trivy scan report in table format as an artifact in Jenkins
             archiveArtifacts artifacts: 'trivy-report.txt', allowEmptyArchive: true
         }
     }
 }
+
 
 
 
