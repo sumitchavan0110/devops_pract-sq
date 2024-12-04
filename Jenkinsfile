@@ -85,7 +85,7 @@ pipeline {
                 script {
                        def result = sh(
                     // Run Trivy to scan the Docker image for vulnerabilities
-                     script: "trivy image --exit-code 1 --no-progress --format txt -o trivy-report.txt ${DOCKER_IMAGE}",
+                     script: "trivy image --exit-code 1 --no-progress --format text -o trivy-report.text ${DOCKER_IMAGE}",
                     returnStatus: true
                        )
                     echo "Trivy scan completed with exit code: ${result}"
