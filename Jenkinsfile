@@ -2,20 +2,20 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_SERVER = 'http://172.28.95.37:9000'
+        SONARQUBE_SERVER = 'http:localhost:9000'
         PROJECT_KEY = 'jobportal'
         //SONARQUBE_TOKEN = credentials('sonarv1') 
-        SONARQUBE_TOKEN = 'sqp_d71cf354e237a65f6011cd03657d2fa738614901'
+        SONARQUBE_TOKEN = 'squ_a83d99b633295383cf047924a5005967029dadbe'
         SOURCE_DIR = 'Job_portal_CI_CD/jobportal-application'  // Adjust this path if needed
 
-        DOCKER_IMAGE = 'brijesh35/my-jobportal-app:jp17'
+        DOCKER_IMAGE = 'sumitchavan0110/jobportalimage:v1'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 script {
-                    def gitRepoUrl = 'https://github.com/agraharibrijesh/devops_pract.git'
+                    def gitRepoUrl = 'https://github.com/sumitchavan0110/devops_pract-sq.git'
                     checkout([$class: 'GitSCM', branches: [[name: 'main']],
                         userRemoteConfigs: [[url: gitRepoUrl]]])
                 }
